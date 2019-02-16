@@ -2,12 +2,24 @@
  * Sheets Block index.
  */
 
-//  Import CSS.
-import './style.scss';
-import './editor.scss';
-
+/**
+ * WordPress dependencies.
+ */
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
+const { } = wp.components;
+const { } = wp.editor;
+
+/**
+ * Internal dependencies.
+ */
+import SheetsBlockEditWithState from './sheets-block-edit-with-state';
+
+/**
+ * Stylesheets.
+ */
+import './style.scss';
+import './editor.scss';
 
 /**
  * Register Sheets Block.
@@ -27,20 +39,19 @@ registerBlockType( 'sheets-block/google-sheets-embed', {
 		__( 'Google Sheets' ),
 		__( 'Embed' ),
 	],
+	attributes: {
+		sheetId: {
+			type: 'string',
+			default: '',
+		},
+	},
 
 	/**
 	 * Block edit method.
 	 *
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
-	edit: function( props ) {
-		// Creates a <p class='wp-block-cgb-block-sheets-block'></p>.
-		return (
-			<div className={ props.className }>
-				<p>— Hello from the backend.</p>
-			</div>
-		);
-	},
+	edit: SheetsBlockEditWithState,
 
 	/**
 	 * Block save method.
