@@ -45,7 +45,7 @@ function sheets_block_enqueue_editor_assets() { // phpcs:ignore
 	wp_enqueue_script(
 		'sheets_block-cgb-block-js',
 		plugins_url( '/dist/blocks.build.js', dirname( __FILE__ ) ),
-		array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ),
+		array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor', 'wp-components', 'wp-data', 'wp-compose', 'wp-redux-routine' ),
 		filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.build.js' ),
 		true
 	);
