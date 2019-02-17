@@ -8,6 +8,7 @@ const { Component, Fragment } = wp.element;
  */
 import SheetsBlockControls from './sheets-block-controls';
 import SheetsBlockPlaceholder from './sheets-block-placeholder';
+import SheetsBlockTable from './sheets-block-table';
 
 class SheetsBlockEdit extends Component {
 	constructor() {
@@ -60,19 +61,9 @@ class SheetsBlockEdit extends Component {
 					switchBackToPlaceholder={ switchBackToPlaceholder }
 				/>
 				<div className={ className }>
-					<table className="wp-block-table">
-						<tbody>
-							{ sheet.map( item => (
-								<tr key={ item.id.$t }>
-									<td>
-										<div className="wp-block-table__cell-content">
-											{ item.id.$t }
-										</div>
-									</td>
-								</tr>
-							) ) }
-						</tbody>
-					</table>
+					<SheetsBlockTable
+						entries={ sheet }
+					/>
 				</div>
 			</Fragment>
 		);
