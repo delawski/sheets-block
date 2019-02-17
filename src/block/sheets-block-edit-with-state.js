@@ -8,7 +8,7 @@ const { withSelect, withDispatch } = wp.data;
  * Internal dependencies.
  */
 import SheetsBlockEdit from './sheets-block-edit';
-import { REDUCER_KEY } from '../state/store';
+import { REDUCER_KEY } from '../state/reducer';
 
 const SheetsBlockEditWithState = compose(
 	withSelect( ( select, ownProps ) => {
