@@ -15,10 +15,10 @@ const SheetsBlockEditWithState = compose(
 		const { getSheet, hasRequestError } = select( REDUCER_KEY );
 		const { sheetId } = ownProps.attributes;
 		const sheet = undefined !== sheetId && '' !== sheetId && getSheet( sheetId );
-		const requestFailed = hasRequestError();
+		const cannotEmbed = hasRequestError();
 		return {
+			cannotEmbed,
 			sheet,
-			requestFailed,
 		}
 	} ),
 	withDispatch( () => {
