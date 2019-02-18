@@ -1,3 +1,5 @@
+import { pickBy, values } from 'lodash';
+
 /**
  * Request a sheet from Google Sheets.
  *
@@ -18,8 +20,15 @@ export async function requestSheet( sheetId ) {
  * @returns {Array}
  */
 export function parseRawData( rawData ) {
-	if ( rawData.feed && rawData.feed.entry ) {
-		return rawData.feed.entry;
+	if ( ! rawData.feed || ! rawData.feed.entry ) {
+		return [];
 	}
-	return [];
+
+	return rawData.feed.entry.map( ( singleEntry ) => {
+		const filteredEntries = pickBy( singleEntry, ( value, key ) => key.startsWith( 'gsx$' ) );
+		return {
+			id: singleEntry.id.$t,
+			values: values( filteredEntries ).map( ( item ) => item.$t ),
+		};
+	} );
 }

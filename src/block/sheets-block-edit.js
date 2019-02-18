@@ -62,7 +62,7 @@ class SheetsBlockEdit extends Component {
 				/>
 				<div className={ className }>
 					<SheetsBlockTable
-						entries={ sheet }
+						rows={ sheet }
 					/>
 				</div>
 			</Fragment>
