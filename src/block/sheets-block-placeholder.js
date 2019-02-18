@@ -6,7 +6,7 @@ const { Button, Placeholder } = wp.components;
 const { BlockIcon } = wp.editor;
 
 const SheetsBlockPlaceholder = ( props ) => {
-	const { icon, value, onSubmit, onChange, requestFailed } = props;
+	const { icon, value, onSubmit, onChange, cannotEmbed } = props;
 	const label = __( 'Google Sheets ID' );
 	return (
 		<Placeholder
@@ -26,7 +26,7 @@ const SheetsBlockPlaceholder = ( props ) => {
 					type="submit">
 					{ _x( 'Embed', 'button label' ) }
 				</Button>
-				{ requestFailed &&
+				{ cannotEmbed &&
 				<p className="components-placeholder__error">
 					{ __( 'Sorry, we could not embed that content.' ) }
 				</p>

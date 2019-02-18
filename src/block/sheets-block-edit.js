@@ -1,69 +1,71 @@
 /**
  * WordPress dependencies.
  */
-const { Component } = wp.element;
+const { Component, Fragment } = wp.element;
 
 /**
  * Internal dependencies.
  */
+import SheetsBlockControls from './sheets-block-controls';
 import SheetsBlockPlaceholder from './sheets-block-placeholder';
+import SheetsBlockTable from './sheets-block-table';
 
 class SheetsBlockEdit extends Component {
-	constructor () {
+	constructor() {
 		super( ...arguments );
 		this.state = {
-			inputValue: '',
+			editingSource: false,
+			inputValue: this.props.attributes.sheetId,
 		}
 	}
 
 	render() {
-		const { inputValue } = this.state;
-		const { className, sheet, requestFailed, setAttributes } = this.props;
+		const { editingSource, inputValue } = this.state;
+		const { cannotEmbed, className, setAttributes, sheet } = this.props;
 
 		const onChange = ( event ) => {
-			this.setState( {
-				inputValue: event.target.value,
-			} );
+			this.setState( { inputValue: event.target.value } );
+		};
+
+		const switchBackToPlaceholder = () => {
+			this.setState( { editingSource: true } );
 		};
 
 		const onSubmit = ( event ) => {
-			event.preventDefault();
-			setAttributes( {
-				sheetId: inputValue,
-			})
+			if ( event ) {
+				event.preventDefault();
+			}
+			this.setState( { editingSource: false } );
+			setAttributes( { sheetId: inputValue } );
 		};
 
-		if ( ! sheet || requestFailed ) {
+		if ( ! sheet || cannotEmbed || editingSource ) {
 			return (
 				<div className={ className }>
 					<code>17bIpFB4VA4MvuZ5qfS4aK_O4YmNlako8p7hRJPehHfQ</code>
 					<SheetsBlockPlaceholder
+						cannotEmbed={ cannotEmbed }
 						icon="media-spreadsheet"
-						value={ inputValue }
 						onChange={ onChange }
 						onSubmit={ onSubmit }
-						requestFailed={ requestFailed }
+						value={ inputValue }
 					/>
 				</div>
 			);
 		}
 
 		return (
-			<div className={ className }>
-				<table className="wp-block-table">
-					<tbody>
-						{ sheet.map( item => (
-							<tr key={ item.id.$t }>
-								<td>
-									<div className="wp-block-table__cell-content">
-										{ item.id.$t }
-									</div>
-								</td>
-							</tr>
-						) ) }
-					</tbody>
-				</table>
-			</div>
+			<Fragment>
+				<SheetsBlockControls
+					showBackToPlaceholderControl={ sheet && ! cannotEmbed }
+					switchBackToPlaceholder={ switchBackToPlaceholder }
+				/>
+				<div className={ className }>
+					<SheetsBlockTable
+						rows={ sheet }
+					/>
+				</div>
+			</Fragment>
 		);
 	}
 }

@@ -8,17 +8,17 @@ const { withSelect, withDispatch } = wp.data;
  * Internal dependencies.
  */
 import SheetsBlockEdit from './sheets-block-edit';
-import { REDUCER_KEY } from '../state/store';
+import { REDUCER_KEY } from '../state/reducer';
 
 const SheetsBlockEditWithState = compose(
 	withSelect( ( select, ownProps ) => {
 		const { getSheet, hasRequestError } = select( REDUCER_KEY );
 		const { sheetId } = ownProps.attributes;
 		const sheet = undefined !== sheetId && '' !== sheetId && getSheet( sheetId );
-		const requestFailed = hasRequestError();
+		const cannotEmbed = hasRequestError();
 		return {
+			cannotEmbed,
 			sheet,
-			requestFailed,
 		}
 	} ),
 	withDispatch( () => {
