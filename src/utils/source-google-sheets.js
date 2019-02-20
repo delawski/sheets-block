@@ -1,4 +1,33 @@
+/**
+ * External dependencies.
+ */
 import { pickBy, values } from 'lodash';
+
+/**
+ * Internal dependencies.
+ */
+import externalApiFetch from '../utils/external-api-fetch';
+
+/**
+ * Build Google Sheets feed URL based on provided options.
+ *
+ * @param options
+ * @return {string|null}
+ */
+function buildGoogleSheetsUrl( options ) {
+	const {
+		sheetId,
+		type = 'list',
+		visibility = 'public',
+		projection = 'full',
+	} = options;
+
+	if ( ! sheetId ) {
+		return null;
+	}
+
+	return `https://spreadsheets.google.com/feeds/${ type }/${ sheetId }/${ visibility }/${ projection }?alt=json`;
+}
 
 /**
  * Request a sheet from Google Sheets.
@@ -7,10 +36,8 @@ import { pickBy, values } from 'lodash';
  * @returns {Promise<*>}
  */
 export async function requestSheet( sheetId ) {
-	const response = await fetch(
-		`https://spreadsheets.google.com/feeds/list/${ sheetId }/od6/public/values?alt=json`
-	);
-	return await response.json();
+	const url = buildGoogleSheetsUrl( { sheetId } );
+	return await externalApiFetch( { url } );
 }
 
 /**
