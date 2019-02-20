@@ -42,7 +42,7 @@ class SheetsBlockEdit extends Component {
 		if ( ! sheet || cannotEmbed || editingSource ) {
 			return (
 				<div className={ className }>
-					<code>17bIpFB4VA4MvuZ5qfS4aK_O4YmNlako8p7hRJPehHfQ</code>
+					<code>17bIpFB4VA4MvuZ5qfS4aK_O4YmNlako8p7hRJPehHfQ/od6</code>
 					<SheetsBlockPlaceholder
 						cannotEmbed={ cannotEmbed }
 						icon="media-spreadsheet"
