@@ -16,6 +16,13 @@ class SheetsBlockEdit extends Component {
 		this.state = {
 			editingSource: false,
 			inputValue: this.props.attributes.sheetId,
+		};
+	}
+
+	componentDidUpdate( prevProps ) {
+		const sheetChanged = prevProps.sheet !== this.props.sheet;
+		if ( sheetChanged ) {
+			this.props.setAttributes( { content: this.props.sheet } );
 		}
 	}
 
