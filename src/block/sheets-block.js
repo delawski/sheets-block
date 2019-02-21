@@ -3,19 +3,14 @@
  */
 const { __ } = wp.i18n;
 const { registerBlockType } = wp.blocks;
-const { } = wp.components;
-const { } = wp.editor;
+const { withSelect } = wp.data;
 
 /**
  * Internal dependencies.
  */
-import SheetsBlockEditWithState from './sheets-block-edit-with-state';
-
-/**
- * Stylesheets.
- */
-import './style.scss';
-import './editor.scss';
+import { REDUCER_KEY } from '../state/reducer';
+import SheetsBlockEdit from './sheets-block-edit';
+import SheetsBlockTable from './sheets-block-table';
 
 /**
  * Register Sheets Block.
@@ -40,25 +35,41 @@ registerBlockType( 'sheets-block/google-sheets-embed', {
 			type: 'string',
 			default: '',
 		},
+		content: {
+			type: 'string',
+			default: '',
+		},
 	},
 
 	/**
 	 * Block edit method.
 	 *
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
+	 *
+	 * @return {*} Edit element
 	 */
-	edit: SheetsBlockEditWithState,
+	edit: withSelect( ( select, ownProps ) => {
+		const { getSheet, hasRequestError } = select( REDUCER_KEY );
+		const { attributes } = ownProps;
+		const { sheetId } = attributes;
+		const sheet = undefined !== sheetId && '' !== sheetId && getSheet( sheetId );
+		const cannotEmbed = hasRequestError();
+		return {
+			cannotEmbed,
+			sheet,
+		};
+	} )( SheetsBlockEdit ),
 
 	/**
 	 * Block save method.
 	 *
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
+	 *
+	 * @return {*} Save element
 	 */
-	save: function( props ) {
-		return (
-			<div>
-				<p>— Hello from the frontend.</p>
-			</div>
-		);
-	},
+	save: ( { attributes } ) => (
+		attributes.content ?
+			<SheetsBlockTable rows={ attributes.content } /> :
+			<p>{ __( 'No content exists.' ) }</p>
+	),
 } );
